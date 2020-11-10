@@ -1,6 +1,9 @@
 namespace SpriteKind {
     export const Enemy2 = SpriteKind.create()
 }
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
+    game.over(true)
+})
 // Detect when hero and Snakes collide
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy2, function (sprite, otherSprite) {
     info.changeLifeBy(-2)
@@ -13,60 +16,33 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     otherSprite.startEffect(effects.disintegrate, 100)
     otherSprite.destroy()
 })
+/**
+ * Initialize
+ */
 let enemy2: Sprite = null
 let enemy: Sprite = null
 let heroImg = sprites.castle.heroWalkFront1
 let batImg = sprites.builtin.forestBat4
 let snakeImg = sprites.builtin.forestSnake2
-tiles.setTilemap(tiles.createTilemap(hex`200020000405050505060405050f050505050505050505060405050f05050505050f050603090909090803141414141414141414141414080314141414141414141414080309090909080201010101010c141414141414080314141414140d0101010c080309090909080405050505060314140d0c14140a0b140d0c14140a050506030803090909090802010101010703141408031414141414080314140d01010703080309090909080405050f05050b14140803140d01010107020c140a05050603080201010e01070314141414141414140803140a0604050f050b1414141408030804050b0e0a050b14140d010101010107031414080314141414141414140803080314141414141414140a0505050505060314140802010101010c14141408030803140d010101010c14141414141414080314140a050f0505060314141408020703140a050505060201010101010c1408031414141414141408031414140a05060314141414140804050f0505060314080314141414141414080314141414140803141414141408031414141408031408031414141414141408031414141414080201011001010703140d0c140803140802010101010110010703141414141408040505050505050b14080314080314080405050f05050505050b140d0c1414080314141414141414140a0b14080314080314141414141414141414080314140803140d0c1414141414141414080314080314141414141414141414080314140803141103140d01010101010107031408020101010110010101010c080314140803140a0b14080405050f0505050b140a050505050505050f05060308031414080314141414080314141414141414140d0101010c1414141414080308031414080201010c14080314141414141414140804050603141414141408020703141408040f050b140802010101010101010107030d070314141414140a05050b14140803141414140a05050505050505050506030a050b14141414141414141414140803141414141414141414141414141408031414141414140d0101010101010107021001010c1414140d0110010c1414080314141414141408040505050505050604050f06031414140a050f050b1414110314140d010101070309090909090908031414080314141414141414141414080314140a050505050b090909090909080314140803141414140d010101010107031414141413131313090909090909080314140803141414140a0505050505050b14140d010101010c090909090909110314140a0b14141414141414141414141414140a05050506120909090909090803141414141414141414141414141414141414141414140803090909090909080201010101010101010101010101010101010101010101070201010110010107`, img`
-    22222222222222222222222222222222
-    2....22............22..........2
-    2....22222222......22.....222222
-    2....22222222..22..22.22..222222
-    2....22222222..22.....22..222222
-    2.2..22222222..22.2222222.222222
-    222.222........22.2222222....222
-    222.222..22222222..22........222
-    2........22222222..2222222...222
-    2.222222.......22..2222222...222
-    2.222222222222.22.......22...222
-    2.....22222222.22.......22.....2
-    2.....22....22.22.......22.....2
-    22222222.22.22.22222222222.....2
-    22222222.22.22.22222222222.22..2
-    2........22.22.22..........22..2
-    2.22........22.22..........22..2
-    2.22.222222222.22222222222222..2
-    2.22.222222222.22222222222222..2
-    2....22........22222.....2222..2
-    2222.22........22222.....2222..2
-    2222.222222222222222.....2222..2
-    2....222222222222222...........2
-    2..............22......222222222
-    22222...22222..22......222222222
-    22222...22222..22..222222......2
-    2..22..........22..222222......2
-    2..22....22222222..............2
-    2..22....22222222...22222......2
-    2..22..............222222......2
-    2......................22......2
-    22222222222222222222222222222222
-    `, [myTiles.transparency16,sprites.dungeon.greenOuterSouth0,sprites.dungeon.greenOuterSouthEast,sprites.dungeon.greenOuterWest1,sprites.dungeon.greenOuterNorthWest,sprites.dungeon.greenOuterNorth0,sprites.dungeon.greenOuterNorthEast,sprites.dungeon.greenOuterSouthWest,sprites.dungeon.greenOuterEast0,sprites.dungeon.floorLight2,sprites.dungeon.greenInnerSouthWest,sprites.dungeon.greenInnerSouthEast,sprites.dungeon.greenInnerNorthEast,sprites.dungeon.greenInnerNorthWest,sprites.dungeon.stairSouth,sprites.dungeon.greenOuterNorth2,sprites.dungeon.greenOuterSouth2,sprites.dungeon.greenOuterEast2,sprites.dungeon.greenOuterWest2,sprites.dungeon.stairWest,sprites.dungeon.floorDark2], TileScale.Sixteen))
+tiles.setTilemap(tilemap`level_0`)
 info.setLife(3)
+info.startCountdown(45)
 // Create hero sprite
 let hero = sprites.create(heroImg, SpriteKind.Player)
 controller.moveSprite(hero)
 scene.cameraFollowSprite(hero)
+tiles.placeOnTile(hero, tiles.getTileLocation(2, 2))
 // Spawn Bats
-game.onUpdateInterval(900, function () {
+game.onUpdateInterval(500, function () {
     enemy = sprites.create(batImg, SpriteKind.Enemy)
-    enemy.setPosition(160, randint(0, 120))
-    enemy.setVelocity(randint(-75, -50), 0)
+    enemy.setVelocity(0, randint(-75, -50))
     enemy.setFlag(SpriteFlag.DestroyOnWall, true)
+    tiles.placeOnRandomTile(enemy, sprites.dungeon.greenOuterWest1)
 })
-game.onUpdateInterval(2250, function () {
+// Spawn Snakes
+game.onUpdateInterval(500, function () {
     enemy2 = sprites.create(snakeImg, SpriteKind.Enemy2)
-    enemy2.setPosition(randint(0, 160), 0)
-    enemy2.setVelocity(0, randint(25, 50))
+    enemy2.setVelocity(0, randint(25, 65))
     enemy2.setFlag(SpriteFlag.DestroyOnWall, true)
+    tiles.placeOnRandomTile(enemy2, sprites.dungeon.greenOuterNorth0)
 })
