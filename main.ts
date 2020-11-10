@@ -1,6 +1,14 @@
 namespace SpriteKind {
     export const Enemy2 = SpriteKind.create()
 }
+/**
+ * Initialize
+ */
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleBlueCrystal, function (sprite, location) {
+    tiles.setTileAt(tiles.getTileLocation(30, 1), sprites.dungeon.floorDark2)
+    tiles.setTileAt(tiles.getTileLocation(19, 27), sprites.dungeon.stairWest)
+    tiles.setWallAt(tiles.getTileLocation(19, 27), false)
+})
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.chestClosed, function (sprite, location) {
     game.over(true)
 })
@@ -10,15 +18,17 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy2, function (sprite, otherS
     otherSprite.startEffect(effects.confetti, 100)
     otherSprite.destroy()
 })
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleRedCrystal, function (sprite, location) {
+    tiles.setTileAt(tiles.getTileLocation(7, 20), sprites.dungeon.floorDark2)
+    tiles.setTileAt(tiles.getTileLocation(20, 27), sprites.dungeon.stairWest)
+    tiles.setWallAt(tiles.getTileLocation(20, 27), false)
+})
 // Detect when hero and Bats collide
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
     otherSprite.startEffect(effects.disintegrate, 100)
     otherSprite.destroy()
 })
-/**
- * Initialize
- */
 let enemy2: Sprite = null
 let enemy: Sprite = null
 let heroImg = sprites.castle.heroWalkFront1
