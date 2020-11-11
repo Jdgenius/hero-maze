@@ -1,9 +1,6 @@
 namespace SpriteKind {
     export const Enemy2 = SpriteKind.create()
 }
-/**
- * Initialize
- */
 scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleBlueCrystal, function (sprite, location) {
     tiles.setTileAt(tiles.getTileLocation(30, 1), sprites.dungeon.floorDark2)
     tiles.setTileAt(tiles.getTileLocation(19, 27), sprites.dungeon.stairWest)
@@ -36,7 +33,7 @@ let batImg = sprites.builtin.forestBat4
 let snakeImg = sprites.builtin.forestSnake2
 tiles.setTilemap(tilemap`level_0`)
 info.setLife(3)
-info.startCountdown(45)
+info.startCountdown(90)
 // Create hero sprite
 let hero = sprites.create(heroImg, SpriteKind.Player)
 controller.moveSprite(hero)
